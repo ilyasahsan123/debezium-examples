@@ -10,46 +10,24 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>io.debezium.examples</groupId>
     <artifactId>cache-invalidation</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
-
-    <name>cache-invalidation</name>
-
     <properties>
-        <compiler-plugin.version>3.13.0</compiler-plugin.version>
-        <maven.compiler.release>21</maven.compiler.release>
-        <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
-        <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.15.1</quarkus.platform.version>
         <skipITs>true</skipITs>
-        <surefire-plugin.version>3.3.1</surefire-plugin.version>
+        <surefire-plugin.version>3.5.2</surefire-plugin.version>
         <infinispan.version>15.0.8.Final</infinispan.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>${quarkus.platform.group-id}</groupId>
-                <artifactId>${quarkus.platform.artifact-id}</artifactId>
-                <version>${quarkus.platform.version}</version>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-bom</artifactId>
+                <version>${version.quarkus}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>42.7.10</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.kafka</groupId>
-                <artifactId>kafka-clients</artifactId>
-                <version>4.1.1</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
-
 
     <dependencies>
         <dependency>
@@ -75,21 +53,15 @@
         <dependency>
             <groupId>io.debezium</groupId>
             <artifactId>debezium-embedded</artifactId>
-            <version>${version.debezium}</version>
         </dependency>
         <dependency>
             <groupId>io.debezium</groupId>
             <artifactId>debezium-connector-postgres</artifactId>
-            <version>${version.debezium}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers</artifactId>
         </dependency>
         <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-core</artifactId>
-            <version>15.0.8.Final</version>
+            <version>${infinispan.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -112,10 +84,15 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>${quarkus.platform.group-id}</groupId>
+                <groupId>io.quarkus</groupId>
                 <artifactId>quarkus-maven-plugin</artifactId>
-                <version>${quarkus.platform.version}</version>
+                <version>${version.quarkus}</version>
                 <extensions>true</extensions>
+                <configuration>
+                    <systemProperties>
+                        <net.bytebuddy.experimental>true</net.bytebuddy.experimental>
+                    </systemProperties>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -129,7 +106,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${compiler-plugin.version}</version>
+                <version>${maven.compiler.plugin}</version>
                 <configuration>
                     <parameters>true</parameters>
                 </configuration>
