@@ -20,6 +20,17 @@
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-maven-plugin</artifactId>
         <version>${version.quarkus}</version>
+        <configuration>
+          <systemProperties>
+            <!--
+                Allow ByteBuddy to operate on JDK versions it does not yet officially support
+                (the Quarkus/ByteBuddy version pulled in here predates official Java 21 support).
+                Remove once the Quarkus BOM upgrades to a ByteBuddy release that supports the
+                target JDK natively.
+            -->
+            <net.bytebuddy.experimental>true</net.bytebuddy.experimental>
+          </systemProperties>
+        </configuration>
         <extensions>true</extensions>
         <executions>
           <execution>
@@ -92,5 +103,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
 </project>
